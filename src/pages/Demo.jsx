@@ -1,14 +1,22 @@
 // Import necessary components from react-router-dom and other parts of the application.
+import {useState} from "react";
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";  // Custom hook for accessing the global state.
 
 export const Demo = () => {
   // Access the global state and dispatch function using the useGlobalReducer hook.
-  const { store, dispatch } = useGlobalReducer()
+  const { store, dispatch } = useGlobalReducer();
+  const [input, setInput] = useState('')
+
 
   return (
     <div className="container">
       <ul className="list-group">
+         <input id='task' name='task' value={input} onChange={(e)=> setInput(e.target.value)} />
+          <button className="btn btn-primary" onClick={()=>dispatch({
+            type: 'add_task',
+            payload: {title: input}
+          })}>add task</button>
         {/* Map over the 'todos' array from the store and render each item as a list element */}
         {store && store.todos?.map((item) => {
           return (
@@ -21,10 +29,10 @@ export const Demo = () => {
               <Link to={"/single/" + item.id}>Link to: {item.title} </Link>
               
               <p>Open file ./store.js to see the global store that contains and updates the list of colors</p>
-              
+             
               <button className="btn btn-success" 
                 onClick={() => dispatch({
-                  type: "add_task", 
+                  type: "change_color_task", 
                   payload: { id: item.id, color: '#ffa500' }
                 })}>
                 Change Color
